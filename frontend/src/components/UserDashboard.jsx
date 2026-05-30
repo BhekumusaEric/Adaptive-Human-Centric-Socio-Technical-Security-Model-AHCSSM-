@@ -56,13 +56,23 @@ export default function UserDashboard({ user, onRefresh }) {
       </div>
 
       <div className="glass-panel">
-        <h3>Behavioral Insights</h3>
+        <h3>Behavioral Insights & Audit Trail</h3>
         <p>Data driving your current profile.</p>
         <ul>
           <li>Cognitive Bias Risk: {(user.behavior_profile.cognitive_bias_score * 100).toFixed(0)}%</li>
           <li>Historical Click Rate: {(user.behavior_profile.click_rate * 100).toFixed(0)}%</li>
           <li>Accurate Reporting Rate: {(user.behavior_profile.reporting_rate * 100).toFixed(0)}%</li>
         </ul>
+        
+        {user.last_audit && (
+          <div style={{ marginTop: '20px', padding: '15px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', borderLeft: '3px solid var(--primary)' }}>
+            <h5 style={{ margin: '0 0 10px 0', color: 'var(--text-muted)' }}>Algorithmic Audit Trail</h5>
+            <code style={{ fontSize: '0.85rem', color: '#a78bfa' }}>{user.last_audit}</code>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '10px' }}>
+              Formula: Risk = (w1 * Cognitive) + (w2 * Anomaly) + (w3 * Context)
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
