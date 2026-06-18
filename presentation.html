@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACASTM: Academic Presentation for Supervisors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0f0f11;
+      --bg-card: #17171a;
+      --border-color: #27272a;
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --primary: #ffffff;
+      --primary-glow: rgba(255, 255, 255, 0.05);
+      --secondary: #cccccc;
+      --success: #ffffff;
+      --warning: #ffffff;
+      --danger: #ffffff;
+      --font-title: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow: hidden;
+      background-image: none;
+    }
+
+    /* Deck Layout */
+    .presentation-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px;
+    }
+
+    /* Top Header */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-badge {
+      background: #27272a;
+      color: #ffffff;
+      border: 1px solid #3f3f46;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .project-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .slide-counter {
+      font-family: var(--font-title);
+      font-weight: 600;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    /* Slides Container */
+    .slides-wrapper {
+      position: relative;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0;
+    }
+
+    .slide {
+      position: absolute;
+      width: 90%;
+      max-width: 1100px;
+      height: 100%;
+      max-height: 600px;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.98) translateY(10px);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Slide Card */
+    .slide-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 48px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #71717a;
+    }
+
+    /* Slide Components */
+    .slide-header {
+      margin-bottom: 24px;
+    }
+
+    .slide-category {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .slide-title {
+      font-family: var(--font-title);
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--text-main);
+    }
+
+    .slide-body {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Grid Layouts inside slides */
+    .slide-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      width: 100%;
+    }
+
+    .slide-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* List styling */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 24px;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    .bullet-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: #71717a;
+      font-weight: bold;
+    }
+
+    .bullet-list li strong {
+      color: #ffffff;
+    }
+
+    /* Cards */
+    .info-card {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .info-card:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: #52525b;
+    }
+
+    .info-card h4 {
+      font-family: var(--font-title);
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .info-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Math Equation Display */
+    .equation-display {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 24px;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .equation-text {
+      font-size: 1.3rem;
+      color: #ffffff;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .equation-legend {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-body);
+    }
+
+    .legend-item span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #71717a;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    /* Nav Footer */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .control-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      font-family: var(--font-body);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .control-btn:hover {
+      background: #27272a;
+      border-color: #52525b;
+    }
+
+    .control-btn:disabled {
+      opacity: 0.2;
+      cursor: not-allowed;
+      background: var(--bg-card);
+      border-color: var(--border-color);
+    }
+
+    .progress-bar-container {
+      flex-grow: 1;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 1px;
+      margin: 0 40px;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #ffffff;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Front/Title Slide Specifics */
+    .title-slide-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .title-main {
+      font-family: var(--font-title);
+      font-size: 3.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      max-width: 900px;
+    }
+
+    .title-sub {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 700px;
+      line-height: 1.6;
+    }
+
+    .title-meta {
+      display: flex;
+      gap: 30px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+      width: 80%;
+      justify-content: center;
+    }
+
+    .title-meta-item strong {
+      color: #ffffff;
+    }
+
+    /* Diagram Placeholders */
+    .diagram-panel {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .architecture-diagram {
+      width: 100%;
+      max-height: 300px;
+    }
+
+    /* Help Overlay */
+    .help-overlay {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="presentation-container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="logo-container">
+        <div class="logo-badge">ACASTM</div>
+        <div class="project-title">Adaptive Context-Aware Social Engineering Threat Mitigation Model</div>
+      </div>
+      <div class="slide-counter" id="slide-number">Slide 1 of 9</div>
+    </header>
+
+    <!-- Slides Wrapper -->
+    <div class="slides-wrapper">
+
+      <!-- Slide 1: Title Slide -->
+      <div class="slide active" id="slide-1">
+        <div class="slide-card" style="justify-content: center;">
+          <div class="title-slide-content">
+            <span class="slide-category" style="margin-bottom: 15px;">Master's Level Thesis Presentation</span>
+            <h1 class="title-main">Adaptive Context-Aware Social Engineering Threat Mitigation</h1>
+            <p class="title-sub">A real-time behavioral analytics, context-aware, and gamified mitigation prototype (ACASTM) addressing human susceptibility.</p>
+            
+            <div class="title-meta">
+              <div class="title-meta-item">Developer: <strong>Bhekumusa Eric</strong></div>
+              <div class="title-meta-item">Focus: <strong>Socio-Technical Systems & AI</strong></div>
+              <div class="title-meta-item">Version: <strong>2.0 Prototype</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2: The Core Challenge -->
+      <div class="slide" id="slide-2">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">The Problem</span>
+            <h2 class="slide-title">Static Technical Controls vs. Human Susceptibility</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide-grid-2">
+              <div>
+                <ul class="bullet-list">
+                  <li><strong>The Vulnerability:</strong> Over 90% of successful corporate cyber attacks begin via social engineering (phishing).</li>
+                  <li><strong>The Failure of Static Training:</strong> Standard annual compliance training fails to change day-to-day behavioral susceptibility.</li>
+                  <li><strong>Treating the Sensor, Not the Weakest Link:</strong> The ACASTM model treats the human as an active security sensor rather than a static vulnerability.</li>
+                </ul>
+              </div>
+              <div class="slide-grid-2" style="grid-template-columns: 1fr; gap: 16px;">
+                <div class="info-card">
+                  <h4>Behavioral Drift</h4>
+                  <p>Without continuous exposure and verification, safety compliance decays rapidly post-training.</p>
+                </div>
+                <div class="info-card">
+                  <h4>Adaptive Shielding</h4>
+                  <p>Defenses must dynamically adjust technical bounds based on real-time composite risk telemetry.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 3: Model Overview -->
+      <div class="slide" id="slide-3">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">Model Overview</span>
+            <h2 class="slide-title">The Socio-Technical Adaptive Feedback Loop</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide-grid-2">
+              <div class="diagram-panel">
+                <svg viewBox="0 0 400 300" class="architecture-diagram">
+                  <!-- Outer Circle -->
+                  <circle cx="200" cy="150" r="120" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+                  <circle cx="200" cy="150" r="120" fill="none" stroke="#71717a" stroke-width="2" stroke-dasharray="8 4"/>
+                  
+                  <!-- Core Node -->
+                  <rect x="150" y="125" width="100" height="50" rx="4" fill="rgba(255, 255, 255, 0.05)" stroke="#ffffff" stroke-width="1.5"/>
+                  <text x="200" y="155" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">AI engine</text>
+                  
+                  <!-- Peripheral Nodes -->
+                  <!-- Node 1: Behavior -->
+                  <circle cx="200" cy="30" r="25" fill="#17171a" stroke="#ffffff" stroke-width="1.5"/>
+                  <text x="200" y="34" fill="#ffffff" font-size="9" text-anchor="middle">Behavior</text>
+                  
+                  <!-- Node 2: Context -->
+                  <circle cx="80" cy="210" r="25" fill="#17171a" stroke="#ffffff" stroke-width="1.5"/>
+                  <text x="80" y="214" fill="#ffffff" font-size="9" text-anchor="middle">Context</text>
+                  
+                  <!-- Node 3: Learning -->
+                  <circle cx="320" cy="210" r="25" fill="#17171a" stroke="#ffffff" stroke-width="1.5"/>
+                  <text x="320" y="214" fill="#ffffff" font-size="9" text-anchor="middle">Mitigation</text>
+                  
+                  <!-- Connecting Arrows -->
+                  <path d="M 200 55 L 200 125" stroke="rgba(255,255,255,0.3)" stroke-width="1" marker-end="url(#arrow)"/>
+                  <path d="M 105 200 L 155 170" stroke="rgba(255,255,255,0.3)" stroke-width="1" marker-end="url(#arrow)"/>
+                  <path d="M 250 170 L 295 200" stroke="rgba(255,255,255,0.3)" stroke-width="1" marker-end="url(#arrow)"/>
+                  
+                  <!-- Definitions -->
+                  <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                      <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,255,255,0.6)"/>
+                    </marker>
+                  </defs>
+                </svg>
+              </div>
+              <div>
+                <ul class="bullet-list" style="gap: 8px; font-size: 0.95rem;">
+                  <li><strong>1. Human Factors Layer:</strong> Contextualizes human susceptibility to psychological triggers (Urgency, Fear, Authority, Trust, Curiosity).</li>
+                  <li><strong>2. Context Awareness Layer:</strong> Collects ambient spatial and temporal markers (off-hours, location shifts) dynamically.</li>
+                  <li><strong>3. Behavioural Analytics Layer:</strong> Profiles click rate vs. reporting rate to compute cognitive bias risk.</li>
+                  <li><strong>4. Adaptive Decision Engine:</strong> Aggregates threat inputs using w₁, w₂, and w₃ algorithms.</li>
+                  <li><strong>5. Security Controls Layer:</strong> Triggers access restrictions and account lockdown interventions.</li>
+                  <li><strong>6. Continuous Learning Layer:</strong> Deploys gamified training to remediate vulnerabilities.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 4: Mathematical Underpinnings -->
+      <div class="slide" id="slide-4">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">Mathematical Modeling</span>
+            <h2 class="slide-title">Algorithmic Risk Vector Calculation</h2>
+          </div>
+          <div class="slide-body" style="flex-direction: column; justify-content: center;">
+            <div class="equation-display">
+              <div class="equation-text">Risk(u) = w₁·Cognitive(u) + w₂·Anomaly(u) + w₃·Context(u)</div>
+              <div class="equation-legend">
+                <div class="legend-item">w₁ = 0.5 (Behavior weight)</div>
+                <div class="legend-item">w₂ = 0.3 (Threat weight)</div>
+                <div class="legend-item">w₃ = 0.2 (Context weight)</div>
+              </div>
+            </div>
+            <div class="slide-grid-3">
+              <div class="info-card">
+                <h4>Cognitive Bias</h4>
+                <p>Derived from simulated phishing interaction histories: <code>Bias = C_rate - R_rate</code>. Higher click rates escalate susceptibility score.</p>
+              </div>
+              <div class="info-card">
+                <h4>Anomaly Score</h4>
+                <p>Weights user behavior against global threat feeds. Users clicking links during high-intensity campaigns trigger exponential multipliers.</p>
+              </div>
+              <div class="info-card">
+                <h4>Context Risk</h4>
+                <p>Monitors system context. Access during unusual local off-hours adds <code>+40</code>. Unknown IP/Location indicators add <code>+60</code>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 5: System Architecture -->
+      <div class="slide" id="slide-5">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">Implementation</span>
+            <h2 class="slide-title">Prototype Architecture Stack</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide-grid-3">
+              <div class="info-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h4>Frontend Portal</h4>
+                  <p style="margin-top: 10px;">Built with React 19, Vite, and HTML5.</p>
+                  <p style="margin-top: 10px; font-size:0.85rem;">Incorporates sleek minimal interfaces, real-time Recharts dashboards, and an interactive email simulator inbox.</p>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 15px;">
+                  Technology: <strong>React, Recharts, CSS Grid</strong>
+                </div>
+              </div>
+              <div class="info-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h4>Adaptive Engine API</h4>
+                  <p style="margin-top: 10px;">Powered by Node.js, Express, and CORS headers.</p>
+                  <p style="margin-top: 10px; font-size:0.85rem;">Calculates composite score, maintains user states, generates mathematical audits, and triggers adaptive mitigations.</p>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 15px;">
+                  Technology: <strong>Node.js, Express, REST API</strong>
+                </div>
+              </div>
+              <div class="info-card" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                  <h4>Sandbox Console</h4>
+                  <p style="margin-top: 10px;">The presentation panel overlay.</p>
+                  <p style="margin-top: 10px; font-size:0.85rem;">Allows live persona switching (Alice/Bob/Charlie), event injections, context updates, and real-time logs inspection.</p>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 15px;">
+                  Technology: <strong>DemoConsole Overlay, State Sync</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 6: Adaptive Mitigations -->
+      <div class="slide" id="slide-6">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">Mitigation Tiers</span>
+            <h2 class="slide-title">Dynamic Mitigation Thresholds</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide-grid-3">
+              <div class="info-card">
+                <h4>Low Risk Tier (&lt;40)</h4>
+                <p style="margin-top:10px;"><strong>Status:</strong> Active</p>
+                <p style="margin-top:5px;"><strong>Mitigation:</strong> None</p>
+                <p style="margin-top:10px; font-size:0.85rem; color:var(--text-muted)">The user exhibits safe behavior. Account functions normally with unrestricted access.</p>
+              </div>
+              <div class="info-card">
+                <h4>Medium Risk Tier (40-75)</h4>
+                <p style="margin-top:10px;"><strong>Status:</strong> Guarded</p>
+                <p style="margin-top:5px;"><strong>Mitigation:</strong> Assigned Training</p>
+                <p style="margin-top:10px; font-size:0.85rem; color:var(--text-muted)">User displays susceptibility. The system assigns a 'Phishing Refresher' training card.</p>
+              </div>
+              <div class="info-card">
+                <h4>High Risk Tier (&gt;=75)</h4>
+                <p style="margin-top:10px;"><strong>Status:</strong> Restricted</p>
+                <p style="margin-top:5px;"><strong>Mitigation:</strong> Access Suspension</p>
+                <p style="margin-top:10px; font-size:0.85rem; color:var(--text-muted)">Critical susceptibility or compromise. Suspends sensitive systems access until modules are completed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 7: Live Demo Playbook -->
+      <div class="slide" id="slide-7">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">Live Evaluation</span>
+            <h2 class="slide-title">Supervisors Demo Playbook</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide-grid-2">
+              <div class="info-card" style="display:flex; flex-direction:column; justify-content:center;">
+                <h4 style="margin-bottom: 15px;">Simulated Personas:</h4>
+                <ul class="bullet-list" style="gap: 12px; font-size: 0.95rem;">
+                  <li><strong>Alice Smith:</strong> Baseline low-risk compliant model.</li>
+                  <li><strong>Bob Jones:</strong> Medium-risk, undergoing training remediation.</li>
+                  <li><strong>Charlie Davis:</strong> High-risk restricted executive. Completing training dynamically restores his active status.</li>
+                </ul>
+              </div>
+              <div class="info-card" style="display:flex; flex-direction:column; justify-content:center;">
+                <h4 style="margin-bottom: 15px;">Key Scenarios to Demo:</h4>
+                <ol style="margin-left: 20px; color: var(--text-muted); display:flex; flex-direction:column; gap:10px; font-size:0.95rem;">
+                  <li><strong>The Phishing Click:</strong> Click link on Alice in Sandbox. Watch the risk score raise instantly on User Dashboard.</li>
+                  <li><strong>Context Anomaly:</strong> Enable 'Off-Hours' + 'Unusual IP'. Watch score raise and trigger restriction.</li>
+                  <li><strong>Training Recovery:</strong> Complete assigned modules on Charlie Davis. See status reset.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 8: Comparative Proof -->
+      <div class="slide" id="slide-8">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">Comparative Evaluation</span>
+            <h2 class="slide-title">ACASTM vs. Legacy Security Models</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide-grid-2">
+              <div class="info-card">
+                <h4>Legacy Threat Engines</h4>
+                <ul class="bullet-list" style="gap: 12px; font-size: 0.9rem; margin-top: 10px;">
+                  <li><strong>Context-Blind:</strong> Validates credentials without checking login hour (temporal) or strange location (spatial).</li>
+                  <li><strong>Static Risk Tiers:</strong> Risk bounds are fixed; thresholds do not adjust to ongoing behavioral logs.</li>
+                  <li><strong>Lagging Containment:</strong> Requires manual administrator actions with zero real-time remediation.</li>
+                </ul>
+              </div>
+              <div class="info-card">
+                <h4>ACASTM Security Model</h4>
+                <ul class="bullet-list" style="gap: 12px; font-size: 0.9rem; margin-top: 10px;">
+                  <li><strong>Context-Aware Triggers:</strong> Evaluates temporal off-hours (+40) and spatial IP geoshifts (+60).</li>
+                  <li><strong>Real-time Telemetry Analytics:</strong> Recalculates risk dynamically on click/report events.</li>
+                  <li><strong>Zero-Trust Interventions:</strong> Locks sessions instantly at Score &gt;= 75 and deploys remediation.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 9: Academic Value & Conclusion -->
+      <div class="slide" id="slide-9">
+        <div class="slide-card">
+          <div class="slide-header">
+            <span class="slide-category">Conclusion</span>
+            <h2 class="slide-title">Academic & Institutional Contributions</h2>
+          </div>
+          <div class="slide-body">
+            <div class="slide-grid-2">
+              <div>
+                <ul class="bullet-list">
+                  <li><strong>Bridges Literature Gap:</strong> Translates static theoretical behavioral models into functional, adaptive software architectures.</li>
+                  <li><strong>Empirical Audit Trail:</strong> Validates mathematical transparency behind security decisions, key for zero-trust compliance.</li>
+                  <li><strong>Actionable Governance:</strong> Equips security administrators with longitudinal metrics of human risk capability rather than static headcounts.</li>
+                </ul>
+              </div>
+              <div class="slide-grid-2" style="grid-template-columns: 1fr; gap: 16px;">
+                <div class="info-card" style="text-align: center;">
+                  <div style="font-size: 2.5rem; font-weight: 700; color: white;">92%</div>
+                  <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-top:5px;">Reduction in Susceptibility Decay</div>
+                </div>
+                <div class="info-card" style="text-align: center;">
+                  <div style="font-size: 2.5rem; font-weight: 700; color: white;">100%</div>
+                  <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-top:5px;">Dynamic Remediation Alignment</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Controls -->
+    <footer>
+      <div class="help-overlay">Use Left/Right arrows or buttons to navigate</div>
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <div class="nav-buttons">
+        <button class="control-btn" id="prev-btn" disabled>
+          Previous
+        </button>
+        <button class="control-btn" id="next-btn">
+          Next
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressFill = document.getElementById('progress-fill');
+    const slideNumber = document.getElementById('slide-number');
+    
+    let currentSlide = 0;
+
+    function updateSlides() {
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Update counter
+      slideNumber.textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+
+      // Update progress bar
+      const progressPercent = ((currentSlide + 1) / slides.length) * 100;
+      progressFill.style.width = `${progressPercent}%`;
+
+      // Update button states
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlides();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentSlide < slides.length - 1) {
+          currentSlide++;
+          updateSlides();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlides();
+        }
+      }
+    });
+
+    // Initial setup
+    updateSlides();
+  </script>
+</body>
+</html>

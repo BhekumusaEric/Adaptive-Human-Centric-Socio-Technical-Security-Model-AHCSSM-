@@ -21,8 +21,8 @@ from database import db
 from ai_engine import AdaptiveRiskMitigationEngine
 
 app = FastAPI(
-    title="AHCSSM Backend API",
-    description="Adaptive Human-Centric Socio-Technical Security Model API",
+    title="ACASTM Backend API",
+    description="Adaptive Context-Aware Social Engineering Threat Mitigation Model API",
     version="1.0.0"
 )
 
@@ -99,7 +99,13 @@ def process_interaction(user_id: int, event: SimulationEvent):
     db.save_user(updated_user)
     return updated_user
 
+@app.post("/system/reset")
+def reset_database():
+    """Resets the mock database to its default starting configuration."""
+    db.reset_database()
+    return {"message": "Database successfully reset", "users": db.get_all_users()}
+
 @app.get("/system/status")
 def system_status():
     """Returns the health status of the AI Core."""
-    return {"status": "Active", "engine": "AdaptiveRiskMitigationEngine v1.0", "active_threats": False}
+    return {"status": "Active", "engine": "ACASTM Adaptive Decision Engine v1.0", "active_threats": False}

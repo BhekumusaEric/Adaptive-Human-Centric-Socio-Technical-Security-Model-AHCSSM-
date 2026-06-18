@@ -2,7 +2,7 @@
 database.py
 -----------
 
-Simulated database layer for the AHCSSM prototype.
+Simulated database layer for the ACASTM prototype.
 In a production environment, this would integrate with PostgreSQL or MongoDB.
 For this master's-level prototype, an in-memory datastore sufficiently demonstrates
 the capability of storing and updating Behavioral Profiles and computing risk.
@@ -47,9 +47,25 @@ class MockDatabase:
             ),
             required_training=["Phishing Refresher Module"]
         )
+        # User 3: High Risk
+        u3 = User(
+            id=3,
+            name="Charlie Davis",
+            email="charlie.davis@university.edu",
+            risk_score=80.0,
+            risk_level=RiskLevel.HIGH,
+            behavior_profile=BehaviorProfile(
+                cognitive_bias_score=0.9,
+                click_rate=0.8,
+                reporting_rate=0.1
+            ),
+            required_training=["Advanced Phishing Defense", "Mandatory Security Briefing"],
+            account_restricted=True
+        )
         
         self.users[u1.id] = u1
         self.users[u2.id] = u2
+        self.users[u3.id] = u3
 
     def get_user(self, user_id: int) -> User:
         return self.users.get(user_id)
@@ -59,5 +75,8 @@ class MockDatabase:
 
     def get_all_users(self) -> list:
         return list(self.users.values())
+
+    def reset_database(self):
+        self.seed_data()
 
 db = MockDatabase()

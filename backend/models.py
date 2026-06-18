@@ -3,7 +3,7 @@ models.py
 ---------
 
 This module defines the core data structures and Pydantic models for the Adaptive
-Human-Centric Socio-Technical Security Model (AHCSSM). It represents the conceptual 
+Adaptive Context-Aware Social Engineering Threat Mitigation Model (ACASTM). It represents the conceptual 
 objects such as User Profiles, Behavioral Logs, and Threat Intelligence Contexts 
 necessary for the AI Adaptive Engine to compute dynamic risk scores.
 
@@ -53,7 +53,7 @@ class ThreatIntelligence(BaseModel):
 
 class User(BaseModel):
     """
-    Core User entity for the AHCSSM system.
+    Core User entity for the ACASTM system.
     Maintains the current computed risk level and behavioral profile.
     """
     id: int

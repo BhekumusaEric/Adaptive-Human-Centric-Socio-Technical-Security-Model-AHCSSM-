@@ -16,7 +16,6 @@ distinct dimensions:
 The resulting score triggers specific, automated mitigation actions, achieving the 
 continuous feedback loop essential for adaptive socio-technical defense.
 """
-
 from models import User, BehaviorProfile, ContextData, ThreatIntelligence, RiskLevel
 
 class AdaptiveRiskMitigationEngine:
